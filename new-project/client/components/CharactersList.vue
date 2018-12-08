@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!!character.length" class="ui characters-list cards">
+  <div v-if="!!characters.length" class="ui characters-list cards">
     <div v-for="character in characters" :key="character.name" class="ui card fadeIn-animation">
       <div>
         <img :src="character.image">
@@ -10,7 +10,7 @@
       </div>
       <div class="extra content">
         <span class="right floated">
-          <a :href="character.url">
+          <a :href="character.url" target="_blank">
             <button class="ui icon purple tiny button">More info</button>
           </a>
         </span>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   computed: mapGetters(["characters"])
 };

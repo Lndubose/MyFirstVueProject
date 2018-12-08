@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     handleSearch() {
-      this.$store.dipatch("FETCH_CHARACTERS", this.name);
+      this.$store.dispatch("FETCH_CHARACTERS", this.name);
     }
   }
 };

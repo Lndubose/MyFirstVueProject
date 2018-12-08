@@ -16,7 +16,7 @@ const mutations = {
 
 const actions = {
   async FETCH_CHARACTERS({ commit }, name) {
-    const url = `http://localhost:8080/api/characters?limit=12&name=${name}`;
+    const url = `http://gateway.marvel.com/v1/public/characters?name=${name}&ts=1&apikey=df53465be210cecc1102101d3e233c10&hash=73281dd4ecafe0347548e2218e320c21`;
     const { data } = await axios.get(url);
     commit('RECIEVE_CHARACTERS', { characters: data.results });
   },
@@ -24,6 +24,7 @@ const actions = {
 
 const getters = {
   characters: state => {
+    console.log(state);
     return state.data.map(data => {
       return {
         name: data.name,
