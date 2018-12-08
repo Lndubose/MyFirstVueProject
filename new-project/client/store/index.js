@@ -1,33 +1,48 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const state = {
-  count: 0
-}
+  data: [],
+};
 
 const mutations = {
-  INCREMENT (state) {
-    state.count++
+  RECIEVE_CHARACTERS(state, { characters }) {
+    state.data = characters;
   },
-  DECREMENT (state) {
-    state.count--
-  }
-}
+};
 
 const actions = {
-  incrementAsync ({ commit }) {
-    setTimeout(() => {
-      commit('INCREMENT')
-    }, 200)
-  }
-}
+  async FETCH_CHARACTERS({ commit }, name) {
+    const url = `http://localhost:8080/api/characters?limit=12&name=${name}`;
+    const { data } = await axios.get(url);
+    commit('RECIEVE_CHARACTERS', { characters: data.results });
+  },
+};
+
+const getters = {
+  characters: state => {
+    return state.data.map(data => {
+      return {
+        name: data.name,
+        url: data.urls[1] ? data.urls[1].url : data.urls[0].url,
+        image: `${data.thumbnail.path}.${data.thumbnail.extension}`,
+        description:
+          data.description === ''
+            ? 'No description for this character'
+            : data.description,
+      };
+    });
+  },
+};
 
 const store = new Vuex.Store({
   state,
   mutations,
-  actions
-})
+  actions,
+  getters,
+});
 
-export default store
+export default store;
